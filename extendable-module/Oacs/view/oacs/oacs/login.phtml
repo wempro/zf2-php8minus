@@ -1,0 +1,25 @@
+<div class="login-form center-content"><?php
+$title = 'Login';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+if(!empty($error)) echo '<pre>'.$error.'</pre>';
+#if($isFormSubmitted && !$isPasswordOK) echo '<h3>Incorrect login information</h3>';
+#/*
+$form = $this->form;
+$form->setAttribute('action', $this->url('oacs', array('action'=>'login')));
+$form->prepare();
+echo $this->form()->openTag($form);
+#echo '<div class="form-group">'.$this->formRow($form->get('loginId')).'</div>';
+#echo '<div class="form-group">'.$this->formRow($form->get('loginPass')).'</div>';
+echo $this->formCollection($form);
+#echo $this->formSubmit($form->get('submit'));
+echo $this->form()->closeTag();
+#*/
+
+#echo $this->loginForm();
+#echo '<h3>whoAmI: '.$this->whoAmI.'</h3>';
+
+?></div>

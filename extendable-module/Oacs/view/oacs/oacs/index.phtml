@@ -1,0 +1,40 @@
+<?php
+use Oacs\Model\OacsUser;
+$title = 'User Management';
+#$this->headTitle()->setPostfix(' | i am possible!');
+#$this->headTitle($title, Zend\View\Helper\Placeholder\Container\AbstractContainer::SET);
+$this->headTitle($title);
+#$this->parent->lm='we got the point!';
+#http://www.w3schools.com/bootstrap/bootstrap_ref_comp_glyphs.asp
+
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php 
+$qryParams=$this->getHelperPluginManager()->getServiceLocator()->get('request')->getUri()->getQueryAsArray();
+$paging=(array_key_exists('paging', $qryParams)?intval($qryParams['paging']):1);
+if(intval($paging)<1) $paging=1;
+$crdHlpr=$this->plugin('crudHelper');
+$url=$this->plugin('url');
+$crdHlpr->setPrimaryKey(OacsUser::FLD_PRIMARY);
+$crdHlpr->setLinkBuilder(function ($pId, $pMode='read') use ($url) {
+	switch ($pMode){
+		case 'update':
+			return $url('oacs', array('param1'=>$pId, 'action'=>'update'));
+			break;
+		case 'delete':
+			return $url('oacs', array('param1'=>$pId, 'action'=>'delete'));
+			break;
+		case 'read':
+			return $url('oacs', array('param1'=>$pId, 'action'=>'read'));
+			break;
+	}
+});
+$crdHlpr->setPaginator($tblOacsUser->getNumberOfManagableUser(), function ($pNo=NULL) use ($url){
+	$pgngArr=((isset($pNo) && $pNo>1)?array('query'=>array('paging'=>$pNo)):array());
+	return $url('oacs', array(), $pgngArr);
+})->setCurrentPageNumber($paging)->setTotalRowPerPage(100)->setNumberOfPageDisplayAtOnce(15)->disableDeleteAlert();
+echo $crdHlpr->getList($tblOacsUser->getManagableUsers(array('title'), 100, $crdHlpr->getStartIndex()), array('textId'=>'ID', 'email'=>'Email', 'name'=>'Name', 'oacsUserType'=>'Type', 'oacsUserStatus'=>'Status'));
+echo '<div>'.($tblOacsUser->isSetLoggedInManager()?'<a href="'.$this->url('oacs', array('action'=>'create')).'" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Create New Admin</a> ':'').'<a href="'.$this->url('oacs', array('action'=>'read')).'" class="btn btn-default btn-info"><span class="glyphicon glyphicon-search"></span> View My Information</a></div>';
+#echo $this->crudHelper('list', $this->manufacturers);
+?><p>&nbsp;</p>

@@ -1,0 +1,33 @@
+<?php
+use Oacs\Model\OacsUser;
+$title='Details of "'.$selected->getName().'"';
+$this->headTitle($title);
+$arrEdit=array('action'=>'update', 'param1'=>$selected->getTextId());
+if($selected->isCurrentUser()) $arrEdit=array('action'=>'update');
+$b2l=(true==$managerLoggedIn?' <a href="'.$this->url('oacs').'" class="btn btn-default btn-info"><span class="glyphicon glyphicon-info-sign"></span> Back to User List</a>':'');
+$delButton=(!isset($confirmDelete)?' <a href="'.$this->url('oacs', array('action'=>'delete', 'param1'=>$selected->getTextId())).'" class="btn btn-default btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</a>':'');
+
+
+?>
+<h1><?php echo $this->escapeHtml($title).' <a href="'.$this->url('oacs', $arrEdit).'" class="btn btn-default btn-info"><span class="glyphicon glyphicon-pencil"></span> Update</a>'.(!$selected->isCurrentUser()?$delButton:'').$b2l; ?></h1>
+
+<div class="row">
+          <div class="col"><?php
+if(($selected instanceof \Lib3rdParty\Authentication\AuthenticatedAcsEnabledUserInterface)){
+	if(isset($confirmDelete) && !$selected->isCurrentUser()){
+		echo '<div class="alert">Confirm Delete? <a href="'.$this->url('oacs', array('action'=>'delete', 'param1'=>$selected->getTextId()), array('query'=>array('confirm'=>$selected->getDeleteCode()))).'" class="btn btn-default btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</a> <a href="'.$this->url('oacs', array('action'=>'read', 'param1'=>$selected->getTextId())).'" class="btn btn-default btn-info"><span class="glyphicon glyphicon-pencil"></span> Cancel</a></div>';
+	}
+	$getHtml=function($pTitle, $pValue){
+		return '<div>'.$pTitle.': <strong>'.$pValue.'</strong></div>';
+	};
+	echo $getHtml('ID', $selected->getTextId());
+	echo $getHtml('Name', $selected->getName());
+	echo $getHtml('Email', $selected->getEmailAddress());
+	echo $getHtml('Designation', $selected->getDesignationTextId());
+	#echo $getHtml('Type', $selected->oacsUserType);
+	#echo $getHtml('Status', $selected->oacsUserStatus);
+	#echo $getHtml('Password', $selected->getPassword());
+}else echo '<h3>NOT a VALID User</h3>';
+?></div></div>
+<p>&nbsp;</p>
+

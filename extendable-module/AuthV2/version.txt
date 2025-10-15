@@ -1,0 +1,1 @@
+master copy at D:\workspace\office__others\security-camera-projects\dev__web-app\application\app-src\applications\CameraManagementSystem\module\AuthV2

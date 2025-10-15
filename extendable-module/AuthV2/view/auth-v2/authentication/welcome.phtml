@@ -1,0 +1,17 @@
+<?php
+$prdCode = 'Welcome';
+$this->headTitle($prdCode);
+
+/** @var \Lib3rdParty\Zend\Authentication\AuthenticationService $authService **/
+
+?>
+<h1><?php echo $this->escapeHtml($prdCode); ?></h1>
+
+<?php
+echo '<pre>'.print_r($user, true).'</pre>';
+echo '<a href="'.$this->url('login', array('action'=>'logout')).'">Logout</a>';
+if(method_exists($authService->getLoggedInUser(), 'getAcs')) echo strval($authService->getLoggedInUser()->getAcs());
+else echo '<br /><pre>'.get_class($authService->getLoggedInUser()).'</pre>';
+
+
+

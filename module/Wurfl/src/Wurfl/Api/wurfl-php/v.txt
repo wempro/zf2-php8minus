@@ -1,0 +1,2 @@
+version: wurfl-php-1.6.0.1
+dated: 20150704

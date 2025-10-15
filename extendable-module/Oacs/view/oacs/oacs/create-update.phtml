@@ -1,0 +1,46 @@
+<?php
+$title = (isset($selected)?'Update ['.$selected->textId.']':'Create User');
+$this->headTitle($title);
+
+$delLnk=$rdLink='';
+if(isset($selected)){
+	$arrRead=array('action'=>'read', 'param1'=>$selected->textId);
+	if($selected->isCurrentUser()) $arrRead=array('action'=>'read');
+	$rdLink=' <a href="'.$this->url('oacs', $arrRead).'" class="btn btn-default btn-info"><span class="glyphicon glyphicon-search"></span> Cancel</a>';
+	if(!$selected->isCurrentUser()){
+		$arrDelete=array('action'=>'delete', 'param1'=>$selected->textId);
+		if($selected->isCurrentUser()) $arrDelete=array('action'=>'delete');
+		$delLnk=' <a href="'.$this->url('oacs', $arrDelete).'" class="btn btn-default btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</a>';
+	}
+}
+$b2l=(true==$managerLoggedIn?$delLnk.' <a href="'.$this->url('oacs').'" class="btn btn-default btn-info"><span class="glyphicon glyphicon-info-sign"></span> Back to User List</a>':'')
+
+?>
+<h1><?php echo $this->escapeHtml($title).$rdLink.$b2l; ?></h1>
+
+<div class="row">
+          <div class="col"><?php
+
+/*
+ * https://bugs.php.net/bug.php?id=43877
+ * http://php.net/manual/en/function.stream-resolve-include-path.php
+ */
+/*
+$form->prepare();
+echo $this->form()->openTag($form);
+$elements=$form->getElements();
+unset($elements['id'], $elements['submit']);
+echo $this->formHidden($form->get('id'));
+foreach($elements as $k=>$element) echo '<div class="form-group">'.$this->formRow($form->get($k)).'</div>';
+echo $this->formSubmit($form->get('submit'));
+echo ' <a href="'.$this->url('oacs').'" class="btn btn-default btn-info"><span class="glyphicon glyphicon-info-sign"></span> Back to User List</a>';
+echo $this->form()->closeTag();
+*/
+echo $this->form($form);
+
+
+?></div></div>
+<p>&nbsp;</p>
+
+
+

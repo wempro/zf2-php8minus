@@ -1,0 +1,37 @@
+<?php
+$prdCode = 'Guest Login';
+$this->headTitle($prdCode);
+$this->headLink()->offsetSetStylesheet(101, $this->basePath().'/css/login.css');
+$loginForm=$this->plugin('loginForm');
+?>
+<div class="wms-form-control accountlogingeneral">
+    <div class="creant-new-account"> <span class="creant-new-account-title"><?=$prdCode?></span> <span class="login-account-icon"></span> </div>
+    <?php if(!isset($identity)): ?>
+    <?=(!empty($error)?'<div class="required-field-error-message">'.$error.'</div>':'')?>
+    <div class="custom-table account-login">
+
+		<div class="tr">
+			<div class="heading2 td"><!-- login form -->
+          <?=$loginForm(null, true, $form)?>
+          <a class="underlinetext" href="<?=$this->url('login')?>">Account Login</a>
+          <?php if(isset($registrationUrl)): ?><br /><br /><span class="underlinetext">Or, click here to</span><br /><a href="<?php echo $registrationUrl;?>" class="underlinetext"><b>CREATE NEW ACCOUNT</b></a><?php endif; ?>
+          
+          </div>
+        
+      </div>
+    </div>
+    <?php else: ?>
+    <!-- anonymous user login info -->
+    <?php
+    echo '<pre>'.print_r($identity, true).'</pre>';
+    echo '<a href="'.$this->url('login', array('action'=>'logout')).'">Logout</a>';
+    ?>
+    <?php endif; ?>
+  </div>
+<?php
+$this->headStyle()->captureStart();
+echo $loginForm->getCss();
+$this->headStyle()->captureEnd();
+
+
+
