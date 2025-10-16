@@ -139,11 +139,27 @@ class Gettext extends AbstractFileLoader
         }
 
         // Read header entries
-        if (array_key_exists('', $textDomain)) {
+        // if (array_key_exists('', $textDomain)) {
+        //     $rawHeaders = explode("\n", trim($textDomain['']));
+
+        //     foreach ($rawHeaders as $rawHeader) {
+        //         list($header, $content) = explode(':', $rawHeader, 2);
+
+        //         if (trim(strtolower($header)) === 'plural-forms') {
+        //             $textDomain->setPluralRule(PluralRule::fromString($content));
+        //         }
+        //     }
+
+        //     unset($textDomain['']);
+        // }
+        if (isset($textDomain[''])) {
             $rawHeaders = explode("\n", trim($textDomain['']));
 
             foreach ($rawHeaders as $rawHeader) {
-                list($header, $content) = explode(':', $rawHeader, 2);
+                $parts = explode(':', $rawHeader, 2);
+                if (count($parts) < 2) continue;
+
+                list($header, $content) = $parts;
 
                 if (trim(strtolower($header)) === 'plural-forms') {
                     $textDomain->setPluralRule(PluralRule::fromString($content));
@@ -152,6 +168,7 @@ class Gettext extends AbstractFileLoader
 
             unset($textDomain['']);
         }
+
 
         fclose($this->file);
 
