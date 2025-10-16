@@ -152,14 +152,14 @@ class Gettext extends AbstractFileLoader
 
         //     unset($textDomain['']);
         // }
-        if (s($textDomain[''])) {
+        if (isset($textDomain[''])) {
             $rawHeaders = explode("\n", trim($textDomain['']));
 
             foreach ($rawHeaders as $rawHeader) {
                 $parts = explode(':', $rawHeader, 2);
                 if (count($parts) < 2) continue;
 
-                st($header, $content) = $parts;
+                list($header, $content) = $parts;
 
                 if (trim(strtolower($header)) === 'plural-forms') {
                     $textDomain->setPluralRule(PluralRule::fromString($content));
